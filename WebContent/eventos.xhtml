@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" />
+
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="dados">
+		<h:body style="background-color: #5D0201">
+			<h:form id="formEvento" enctype="multipart/form-data">
+				<div id="font_um">
+					<div id="tabela_evento1">
+						<p:panel id="dadosEvento" header="Exemplo Galeria"
+							style="height:150px;width:500px;">
+							<p:growl />
+							<h:panelGrid columns="2">
+								<h:outputText value="Nome" />
+								<p:inputText value="#{galeriaBean.evento.nome}" size="40" />
+								<h:outputText value="Data" />
+								<p:calendar value="#{galeriaBean.evento.data.time}"
+									navigator="true" pattern="dd/MM/yyyy" />
+								<p:commandButton value="Salvar"
+									action="#{galeriaBean.salvaEvento()}"
+									update="tabelaEventos dadosEvento" />
+								<p:commandButton value="Limpar" onclick="form.reset()" />
+								<p:ajaxStatus>
+									<f:facet name="start">
+										<h:outputText value="aguarde..." />
+									</f:facet>
+									<f:facet name="complete">
+										<h:outputText value="" />
+									</f:facet>
+								</p:ajaxStatus>
+							</h:panelGrid>
+						</p:panel>
+					</div>
+					<div id="tabela_evento2">
+						<p:panel style="width:500px;">
+							<p:dataTable id="tabelaEventos" value="#{galeriaBean.eventos}"
+								var="evento" emptyMessage="Nenhum evento cadastrado" rows="5"
+								paginator="true" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false">
+								<p:column headerText="Cód." style="width:30px;">
+									<h:outputText value="#{evento.id}" />
+								</p:column>
+								<p:column headerText="Evento" style="width:160px;">
+									<h:outputText value="#{evento.nome}" />
+								</p:column>
+								<p:column headerText="Data">
+									<h:outputText value="#{evento.data.time}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Ação">
+									<p:commandButton icon="ui-icon-plus" title="Adicionar Imagem"
+										oncomplete="dialogFotos.show();" update=":formEvento:dadosFoto">
+										<f:setPropertyActionListener
+											target="#{galeriaBean.eventoSelecionado}" value="#{evento}" />
+									</p:commandButton>
+									<p:commandButton icon="ui-icon-search" title="Ver Imagens"
+										action="#{galeriaBean.listaFotosEvento()}"
+										update=":formEvento:dialogGaleria" oncomplete="dialogGaleria.show()">
+										<f:setPropertyActionListener
+											target="#{galeriaBean.eventoSelecionado}" value="#{evento}" />
+									</p:commandButton>
+									<p:commandButton update="tabelaEventos" icon="ui-icon-close"
+										title="Delete" oncomplete="confirmation.show()">
+										<f:setPropertyActionListener value="#{evento}"
+											target="#{galeriaBean.evento}" />
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</div>
+
+					<p:dialog id="dialogFotos" position="top" widgetVar="dialogFotos"
+						modal="true" minWidth="600" minHeight="500">
+						<p:fileUpload fileUploadListener="#{galeriaBean.enviaImagem}"
+							update="imagemTmp" cancelLabel="Cancelar" fileLimit="100000"
+							fileLimitMessage="Imagem muito grande" label="Selecionar"
+							invalidFileMessage="Tipo de imagem inválido"
+							invalidSizeMessage="Imagem muito grande" uploadLabel="Enviar"
+							allowTypes="/(\.|\/)(jpe?g|png)$/">
+
+						</p:fileUpload>
+						<p:outputPanel id="dadosFoto">
+							<h:panelGrid>
+								<p:graphicImage cache="false" id="imagemTmp"
+									value="#{galeriaBean.imagem}" height="300"
+									style="margin: 0 auto;" />
+								<h:outputText value="Descrição" />
+								<p:inputText value="#{galeriaBean.foto.descricao}" size="49" />
+								<h:outputText value="Ordem" />
+								<p:inputMask mask="9" value="#{galeriaBean.foto.ordem}" size="5" />
+							</h:panelGrid>
+						</p:outputPanel>
+						<p:commandButton value="Adicionar"
+							action="#{galeriaBean.salvaFotos()}"
+							update="dadosFoto dadosEvento" />
+					</p:dialog>
+					<p:dialog id="dialogGaleria" widgetVar="dialogGaleria" modal="true"
+						position="top" minWidth="440" minHeight="500">
+						<h:outputText value="Nenhuma imagem encontrada"
+							rendered="#{galeriaBean.fotos.size()==0}" />
+						<p:galleria value="#{galeriaBean.fotos}" var="galeria"
+							effect="slide" effectSpeed="2000" panelHeight="500"
+							panelWidth="600" frameHeight="50" frameWidth="50"
+							filmstripPosition="bottom" showOverlays="true">
+							<p:graphicImage value="/temp/#{galeria.id}.jpg" cache="false"
+								width="400" height="300" title="#{galeria.descricao}"
+								alt="#{galeria.descricao}" />
+							<p:galleriaOverlay title="#{galeria.descricao}">
+							</p:galleriaOverlay>
+						</p:galleria>
+					</p:dialog>
+					<p:confirmDialog
+						message="Tem certeza que deseja remover este contato ?"
+						width="200" showEffect="explode" hideEffect="explode"
+						header="Confirmação" severity="alert" widgetVar="confirmation">
+
+						<p:commandButton value="Sim" update="tabelaEventos dadosEvento"
+							actionListener="#{galeriaBean.remove}"
+							oncomplete="confirmation.hide()" immediate="true" ajax="true" />
+						<p:commandButton value="Não" onclick="confirmation.hide()"
+							type="button" />
+
+					</p:confirmDialog>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

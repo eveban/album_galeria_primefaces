@@ -1,0 +1,5 @@
+body {
+	background: #FF6668 url("images/bgdegrade.jpg") top left
+		repeat-x fixed;
+}
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" />
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="dados">
+		<h:body style="background-color: #5D0201">
+			<h:form id="formFoto" enctype="multipart/form-data">
+				<p:panel id="dadosEvento" header="Exemplo Galeria" visible="false" />
+				<p:dialog id="dialogGaleria" widgetVar="dialogGaleria" modal="true"
+					position="top" minWidth="768" minHeight="512">
+					<h:outputText value="Nenhuma imagem encontrada"
+						rendered="#{galeriaBean.fotos.size()==0}" />
+					<p:galleria value="#{galeriaBean.fotos}" var="galeria"
+						effect="slide" effectSpeed="2000" panelHeight="512"
+						panelWidth="768" frameHeight="50" frameWidth="50"
+						filmstripPosition="bottom" showOverlays="true">
+						<p:graphicImage value="/temp/#{galeria.id}.jpg" cache="false"
+							width="768" height="512" title="#{galeria.descricao}"
+							alt="#{galeria.descricao}" />
+						<p:galleriaOverlay title="#{galeria.descricao}">
+						</p:galleriaOverlay>
+					</p:galleria>
+				</p:dialog>
+				<div id="font_um">
+					<div id="tabela_fotos">
+						<p:panel>
+							<p:dataTable id="tabelaEventos" value="#{galeriaBean.eventos}"
+								var="evento" emptyMessage="Nenhum evento cadastrado" rows="5"
+								paginator="true" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false">
+								<p:column headerText="Código">
+									<h:outputText value="#{evento.id}" />
+								</p:column>
+								<p:column headerText="Evento">
+									<h:outputText value="#{evento.nome}" />
+								</p:column>
+								<p:column headerText="Data">
+									<h:outputText value="#{evento.data.time}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+
+								<p:column headerText="Fotos">
+									<p:commandButton icon="ui-icon-search" title="Ver Imagens"
+										action="#{galeriaBean.listaFotosEvento()}"
+										update=":formFoto:dialogGaleria" oncomplete="dialogGaleria.show()">
+										<f:setPropertyActionListener
+											target="#{galeriaBean.eventoSelecionado}" value="#{evento}" />
+									</p:commandButton>
+									
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</div>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>

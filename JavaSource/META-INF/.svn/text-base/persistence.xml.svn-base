@@ -1,0 +1,33 @@
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="agenda-angelelli"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<class>br.com.agenda.modelo.Cidade</class>
+		<class>br.com.agenda.modelo.Contato</class>
+		<class>br.com.agenda.modelo.Departamento</class>
+		<class>br.com.agenda.modelo.Estado</class>
+		<class>br.com.agenda.modelo.Grupo</class>
+		<class>br.com.agenda.modelo.Usuario</class>
+		<class>br.com.agenda.modelo.Posto</class>
+		<class>br.com.agenda.modelo.Fornecedor</class>
+		<class>br.com.agenda.modelo.Frota</class>
+		<class>br.com.agenda.modelo.Fabricante</class>
+		<class>br.com.agenda.modelo.Setor</class>
+		<class>br.com.agenda.modelo.TipoFrota</class>
+		<class>br.com.agenda.modelo.Motorista</class>
+		<class>br.com.agenda.modelo.Combustivel</class>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:jtds:SQLServer://localhost:1433/angelelli" />
+			<property name="javax.persistence.jdbc.user" value="sa" />
+			<property name="javax.persistence.jdbc.password" value="pkx2m273" />
+
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
+		</properties>
+	</persistence-unit>
+</persistence>

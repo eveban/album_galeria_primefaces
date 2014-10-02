@@ -1,0 +1,53 @@
+.table1 {
+	margin-left: 10%;
+	margin-right: 10%;
+	width: 80%;
+}
+
+.table2 {
+	border: 5px;
+	margin: 0 auto;
+}
+
+body {
+	background: #5D0201 url(../images/background3.jpg) 0% 0% fixed;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 0px;
+	font: 15px Georgia, Verdana, Tahona;
+	font-weight: normal;
+	margin: 0 auto;
+}
+
+#divum {
+	width: 700px;
+	height: 500px;
+	background: #EEEEEE;
+}
+
+#font_um {
+	font-family: Verdana, Georgia, Arial;
+	font-size: 12px;
+}
+
+#tabela_fotos {
+	position: absolute;
+	top: 150px;
+	left: 900px;
+	width: 400px;
+	height: 350px;
+}
+
+#tabela_evento1 {
+	position: absolute;
+	top: 20px;
+	left: 80px;
+}
+
+#tabela_evento2 {
+	position: absolute;
+	top: 200px;
+	left: 800px;
+	width: 400px;
+	height: 350px;
+}

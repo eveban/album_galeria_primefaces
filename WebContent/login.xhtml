@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Spring + Security + Hibernate</title>
+	<link href="resources/css/tabelas.css" rel="stylesheet" type="text/css" />
+	<link href="resources/primefaces-blitzer/theme.css" rel="stylesheet"
+		type="text/css" />
+
+</h:head>
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="dados">
+
+		<h:body id="font_um">
+
+			<h:form prependId="false">
+
+				<p:dialog header="Area restrita" modal="true" closable="false"
+					position="center" widgetVar="modalLogin" minWidth="300" width="300"
+					showEffect="slide" draggable="false" resizable="false"
+					visible="true">
+					<center>
+						<p:messages id="mensagens" showDetail="true" showSummary="false" />
+						<p:focus />
+						<h:panelGrid columns="2" styleClass="campos">
+							<h:outputLabel value="Login" />
+							<h:inputText value="#{usuarioMB.usuario.login}" />
+
+							<h:outputLabel value="Senha: " />
+							<h:inputSecret value="#{usuarioMB.usuario.senha}" />
+
+						</h:panelGrid>
+
+						<br />
+
+						<h:commandButton value="Efetuar Login"
+							action="#{usuarioMB.efetuaLogin}" />
+					</center>
+
+				</p:dialog>
+
+			</h:form>
+
+		</h:body>
+	</ui:define>
+</ui:composition>
+
+</html>
